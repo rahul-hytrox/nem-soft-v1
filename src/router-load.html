@@ -1,0 +1,41 @@
+<script type="text/javascript">
+ /***Router Script***/
+ /***
+ Create This file inside to snipptes and call in theme.liquid file
+ **/
+var pageName = {{ request.page_type | json}};
+var setMetaData = document.createElement('meta');
+setMetaData.httpEquiv = "refresh";
+var locationUrl = 'https://'+window.location.hostname+'/browsing_context_suggestions.json';
+
+async function getCurrentLocator() {
+  let checkCurrentPath = window.location.pathname;
+  const response = await fetch(locationUrl)
+    .then(res=>res.json())
+    .then(r=> { 
+      window.localStorage.setItem('GeoLockId', r.detected_values.country.handle);
+      return r.detected_values.country.handle;
+    });
+  /*if(response !== Shopify.country){
+    console.log('response>>',response)
+      if(response == 'JP'){
+        setMetaData.content = "0; url=https://ilemjapan.com"+checkCurrentPath;
+        document.getElementsByTagName('head')[0].appendChild(setMetaData);
+      }
+      if(response == 'IN'){
+        setMetaData.content = "0; url=https://in.ilemjapan.com"+checkCurrentPath;
+        document.getElementsByTagName('head')[0].appendChild(setMetaData);
+      }
+    }*/
+
+     if(response == 'JP'){
+        setMetaData.content = "0; url=https://ilemjapan.com"+checkCurrentPath;
+        //document.getElementsByTagName('head')[0].appendChild(setMetaData);
+      }
+      if(response == 'IN'){
+        setMetaData.content = "0; url=https://in.ilemjapan.com"+checkCurrentPath;
+        //document.getElementsByTagName('head')[0].appendChild(setMetaData);
+      }
+}
+window.onpaint = getCurrentLocator();
+</script>
